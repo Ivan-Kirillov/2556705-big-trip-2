@@ -12,7 +12,7 @@ export const DATE_FORMAT = {
   'number-month': 'DD MMM',
 };
 
-export const getDefaultPoint = () => ({
+export const DEFAULT_POINT = {
   basePrice: 0,
   dateFrom: new Date().toISOString(),
   dateTo: new Date().toISOString(),
@@ -20,4 +20,4 @@ export const getDefaultPoint = () => ({
   isFavorite: false,
   offers: [],
   type: POINT_TYPES[0],
-});
+};

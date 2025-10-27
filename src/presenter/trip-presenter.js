@@ -4,7 +4,7 @@ import EventEditView from '../view/event-edit-view.js';
 import EventPointView from '../view/event-point-view.js';
 // !! Вроде как не вставляется import PointModel from '../model/point-model.js';
 import { render } from '../render.js';
-import { getDefaultPoint } from '../const.js';
+import { DEFAULT_POINT } from '../const.js';
 
 export default class TripPresenter {
   eventListComponent = new EventListView();
@@ -23,7 +23,7 @@ export default class TripPresenter {
     render(new SortView(), this.tripContainer);
     render(this.eventListComponent, this.tripContainer);
 
-    render(new EventEditView(getDefaultPoint(), destinations, offers), this.eventListComponent.getElement());
+    render(new EventEditView(DEFAULT_POINT, destinations, offers), this.eventListComponent.getElement());
     render(new EventEditView(points[0], destinations, offers), this.eventListComponent.getElement());
 
     for (const point of points) {

@@ -1,12 +1,9 @@
 import dayjs from 'dayjs';
-import minMax from 'dayjs/plugin/minMax';
 import {
   HOURS_IN_DAY,
   SECONDS_IN_MINUTES,
   MILLISECONDS_IN_MINUTES,
 } from '../const';
-
-dayjs.extend(minMax);
 
 function humanizeTaskDueDate(date, format) {
   return date ? dayjs(date).format(format) : '';

@@ -1,7 +1,7 @@
 // Вставлять в .trip-events__list
-import {createElement} from '../render.js';
+import { createElement } from '../render.js';
 import { DATE_FORMAT, POINT_TYPES } from '../const.js';
-import {humanizeTaskDueDate} from '../util/util.js';
+import { humanizeTaskDueDate } from '../utils/utils.js';
 const upFirstLetter = (word) => `${word[0].toUpperCase()}${word.slice(1)}`;
 const formatOfferTitle = (title) => title.split(' ').join('_');
 
@@ -9,8 +9,8 @@ function createEventEditTemplate(point, destinations, offers) {
   const typeOffers = offers.find((off) => off.type === point.type).offers;
   const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
   const pointDestination = destinations.find((dest) => dest.id === point.destination);
-  const {dateFrom, dateTo, basePrice, type} = point;
-  const {name} = pointDestination || {};
+  const { dateFrom, dateTo, basePrice, type } = point;
+  const { name } = pointDestination || {};
   const pointId = point.id || 0;
 
   return (
@@ -81,7 +81,7 @@ function createEventEditTemplate(point, destinations, offers) {
     ${typeOffers.map((typeOffer) => (
       `<div class="event__offer-selector">
           <input class="event__offer-checkbox  visually-hidden" id="event-offer-${formatOfferTitle(typeOffer.title)}-${pointId}" type="checkbox" name="event-offer-${formatOfferTitle(typeOffer.title)}" ${pointOffers.map((offer) => offer.id).includes(typeOffer.id) ? 'checked' : ''}>
-          <label class="event__offer-label" for="event-offer-${typeOffer.title}-${pointId}">
+          <label class="event__offer-label" for="event-offer-${formatOfferTitle(typeOffer.title)}-${pointId}">
             <span class="event__offer-title">${typeOffer.title}</span>
               &plus;&euro;&nbsp;
             <span class="event__offer-price">${typeOffer.price}</span>
