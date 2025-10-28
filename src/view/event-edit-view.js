@@ -151,7 +151,6 @@ function createEventEditTemplate() {
     </li>`
   );
 }
-
 export default class EventEditView {
   getTemplate() {
     return createEventEditTemplate();
