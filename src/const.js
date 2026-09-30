@@ -21,3 +21,19 @@ export const DEFAULT_POINT = {
   offers: [],
   type: POINT_TYPES[0],
 };
+
+export const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+export const SORT_ITEMS = ['day', 'event', 'time', 'price', 'offer'];
+
+export const TEXT_NO_POINTS = {
+  everything: 'Click New Event to create your first point',
+  past: 'There are no past event now',
+  present: 'There are no past present now',
+  future: 'There are no future event now',
+};

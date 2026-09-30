@@ -23,5 +23,9 @@ function getDuration(start, end) {
   }
 }
 
-export {humanizeTaskDueDate, getDuration};
+function getRandomArrayElement(items) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+export {humanizeTaskDueDate, getDuration, getRandomArrayElement};
 

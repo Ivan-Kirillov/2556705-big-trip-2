@@ -1,3 +1,5 @@
+import {getRandomArrayElement} from '../utils/utils.js';
+
 const points = [
   {
     id: 'point-id-1',
@@ -10,7 +12,7 @@ const points = [
       'offer-id-4',
       'offer-id-6',
     ],
-    'type': 'bus'
+    type: 'bus'
   },
   {
     id: 'point-id-1',
@@ -22,7 +24,7 @@ const points = [
     offers: [
       'offer-id-10'
     ],
-    'type': 'ship'
+    type: 'ship'
   },
   {
     id: 'point-id-1',
@@ -32,8 +34,12 @@ const points = [
     destination: 'destination-id-3',
     isFavorite: false,
     offers: [],
-    'type': 'flight'
+    type: 'flight'
   }
 ];
 
-export {points};
+function getRandomPoint() {
+  return getRandomArrayElement(points);
+}
+
+export {points, getRandomPoint};
