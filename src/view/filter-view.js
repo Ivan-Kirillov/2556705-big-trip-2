@@ -30,7 +30,6 @@ export default class FilterView extends AbstractView {
     super();
     this.#filters = filters;
     this.#textNoPoints = textNoPoints;
-    console.log(this.#textNoPoints);
   }
 
   //Геттер, который вернет точки для выбранного фильтра
@@ -63,7 +62,8 @@ export default class FilterView extends AbstractView {
     const filterInputChecked = filterInputs.find((input) => input.checked == true);
     const checkedFilter = this.#filters.find((value) => filterInputChecked.id == `filter-${value.type}`);
     let filterPoints = checkedFilter.points;
-    filterPoints = [];
+    // Проверка как поведет сайт, если filterPoints будет пустой;
+    // filterPoints = [];
     return filterPoints;
   }
 
