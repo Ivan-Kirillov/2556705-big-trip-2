@@ -1,7 +1,6 @@
 import { render, replace } from '../framework/render.js';
 import {generateFilter} from '../mocks/filter.js';
-import {SORT_ITEMS} from '../const.js';
-import {TEXT_NO_POINTS} from '../const.js';
+import {SORT_ITEMS, TEXT_NO_POINTS} from '../const.js';
 import SortView from '../view/sort-view.js';
 import EventListView from '../view/event-list-view.js';
 import PointEditView from '../view/point-edit-view.js';
@@ -26,9 +25,8 @@ export default class TripPresenter {
   init() {
     this.#boardPoints = this.#pointsModel.points;
     // Получаем точки для выбранного фильтра (filteredPoints) и вставляем их в render вместо this.#boardPoints
-    const filters = generateFilter(this.#boardPoints);
-    const filterView = new FilterView(filters, TEXT_NO_POINTS);
-    const filteredPoints = filterView.filteredPoints;
+
+    const filteredPoints = this.#boardPoints;
     const sortView = new SortView(SORT_ITEMS);
     render(sortView, this.#tripContainer);
     render(this.#eventListComponent, this.#tripContainer);
@@ -52,22 +50,18 @@ export default class TripPresenter {
     };
 
     const pointComponent = new PointView(
-      point, this.#destinations, this.#offers, onEditClick
+      point, this.#destinations, this.#offers, () => {
+        replaceCardToForm();
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
     );
-
-    function onEditClick() {
-      replaceCardToForm();
-      document.addEventListener('keydown', escKeyDownHandler);
-    }
 
     const pointEditComponent = new PointEditView(
-      point, this.#destinations, this.#offers, onFormSubmit
+      point, this.#destinations, this.#offers, () => {
+        replaceFormToCard();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
     );
-
-    function onFormSubmit() {
-      replaceFormToCard();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    }
 
     function replaceCardToForm() {
       replace(pointEditComponent, pointComponent);

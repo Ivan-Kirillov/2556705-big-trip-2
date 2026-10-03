@@ -1,4 +1,3 @@
-// Вставлять в .trip-controls__filters
 import AbstractView from '../framework/view/abstract-view.js';
 function createFilterItemTemplate(filter) {
   const {type, points, count} = filter;
@@ -35,28 +34,14 @@ export default class FilterView extends AbstractView {
   //Геттер, который вернет точки для выбранного фильтра
 
   get filteredPoints() {
-    const formFilters = document.querySelector('.trip-filters');
+    const formFilters = this.element;
     // Создаем массив и наполняем его "живой" коллекцией filter-input
-    const filterInputs = [];
-    for (let i = 0; i < formFilters.children.length - 1; i++) {
-      const filterInput = formFilters.children[i].children[0];
-      filterInputs.push(filterInput);
-    }
+    const filterInputs = formFilters.getElementsByClassName('trip-filters__filter-input');
 
-    // Функция, которая убирает поле checked у всех filter-input и add checked для того input, по которому кликнул user
-    function getfilterInputChecked (evt) {
-      for (let i = 0; i < formFilters.children.length - 1; i++) {
-        console.log('Убираем значение checked');
-        // console.log(formFilters.children[i].children[0].checked == true);
-        formFilters.children[i].children[0].checked = false;
-      }
-      evt.target.checked = true;
-    }
+
+
 
     // Добавляет обработчики событий для всех filter-input (через родителя, т.е. form задать обработчик почему-то не удалось)
-    filterInputs.forEach((input) => {
-      input.addEventListener('click', getfilterInputChecked);
-    });
 
     // Находим выбранный фильтер и выбираем точки для данного фильтра(filterPoints)
     const filterInputChecked = filterInputs.find((input) => input.checked == true);
