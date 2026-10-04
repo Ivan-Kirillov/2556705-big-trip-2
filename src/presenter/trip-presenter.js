@@ -1,4 +1,4 @@
-import { render, replace, RenderPosition } from '../framework/render.js';
+import { render, RenderPosition } from '../framework/render.js';
 import {SORT_ITEMS} from '../const.js';
 import SortView from '../view/sort-view.js';
 import PointsListView from '../view/points-list-view.js';
