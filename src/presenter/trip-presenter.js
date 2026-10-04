@@ -1,5 +1,4 @@
 import { render, RenderPosition } from '../framework/render.js';
-import { SortType } from '../const.js';
 import {updateItem} from '../utils/utils.js';
 import SortView from '../view/sort-view.js';
 import PointsListView from '../view/points-list-view.js';
@@ -14,7 +13,7 @@ export default class TripPresenter {
   #tripPoints;
   #destinations;
   #offers;
-  #sortView = new SortView(SortType);
+  #sortView = null;
   #pointsListComponent = new PointsListView();
   #pointPresenters = new Map();
 
@@ -70,7 +69,16 @@ export default class TripPresenter {
     this.#pointPresenters.clear();
   }
 
+  #handleSortTypeChange = (sortType) => {
+    // - Сортируем задачи
+    // - Очищаем список
+    // - Рендерим список заново
+  };
+
   #renderSort() {
+    this.#sortView = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
     render(this.#sortView, this.#tripContainer, RenderPosition.AFTERBEGIN);
   }
 
