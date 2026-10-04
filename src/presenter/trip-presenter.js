@@ -1,5 +1,5 @@
 import { render, RenderPosition } from '../framework/render.js';
-import {SORT_ITEMS} from '../const.js';
+import { SORT_ITEMS } from '../const.js';
 import SortView from '../view/sort-view.js';
 import PointsListView from '../view/points-list-view.js';
 import PointPresenter from './point-presenter.js';
@@ -10,11 +10,12 @@ import NoPointView from '../view/no-points-view.js';
 export default class TripPresenter {
   #tripContainer;
   #pointsModel;
-  #boardPoints;
+  #tripPoints;
   #destinations;
   #offers;
   #sortView = new SortView(SORT_ITEMS);
   #pointsListComponent = new PointsListView();
+  #pointPresenters = new Map();
 
   constructor({ tripContainer, pointsModel }) {
     this.#tripContainer = tripContainer;
@@ -24,10 +25,10 @@ export default class TripPresenter {
   }
 
   init() {
-    this.#boardPoints = this.#pointsModel.points;
-    // Получаем точки для выбранного фильтра (filteredPoints) и вставляем их в render вместо this.#boardPoints
-    // const filteredPoints = this.#boardPoints;
-    this.#renderBoard();
+    this.#tripPoints = this.#pointsModel.points;
+    // Получаем точки для выбранного фильтра (filteredPoints) и вставляем их в render вместо this.#tripPoints
+    // const filteredPoints = this.#tripPoints;
+    this.#renderTrip();
     /* т.к. filterView был перенесен в main.js, то реализация отрисовки текста при отсутствии точек маршрута невозможна на данный
     if (filteredPoints.length === 0) {
       render(new NoPointView(filterView.noPointsText), this.#eventListComponent.element);
@@ -36,14 +37,16 @@ export default class TripPresenter {
   }
 
   #renderPoint(point) {
-    const taskPresenter = new PointPresenter({
-      pointsListContainer: this.#pointsListComponent.element, pointsModel: this.#pointsModel});
-    taskPresenter.init(point);
+    const pointPresenter = new PointPresenter({
+      pointsListContainer: this.#pointsListComponent.element, pointsModel: this.#pointsModel
+    });
+    pointPresenter.init(point);
+    this.#pointPresenters.set(point.newId, pointPresenter);
   }
 
   #renderPoints() {
-    for (let i = 0; i < this.#boardPoints.length; i++) {
-      this.#renderPoint(this.#boardPoints[i]);
+    for (let i = 0; i < this.#tripPoints.length; i++) {
+      this.#renderPoint(this.#tripPoints[i]);
     }
   }
 
@@ -52,11 +55,16 @@ export default class TripPresenter {
     this.#renderPoints();
   }
 
+  #clearPointsList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
   #renderSort() {
     render(this.#sortView, this.#tripContainer, RenderPosition.AFTERBEGIN);
   }
 
-  #renderBoard() {
+  #renderTrip() {
     this.#renderPointsList();
     this.#renderSort();
   }
