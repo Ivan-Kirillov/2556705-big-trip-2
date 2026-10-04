@@ -27,5 +27,9 @@ function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-export {humanizeTaskDueDate, getDuration, getRandomArrayElement};
+function updateItem(items, update) {
+  return items.map((item) => item.newId === update.newId ? update : item);
+}
+
+export {humanizeTaskDueDate, getDuration, getRandomArrayElement, updateItem};
 

@@ -1,5 +1,6 @@
 import { render, RenderPosition } from '../framework/render.js';
 import { SORT_ITEMS } from '../const.js';
+import {updateItem} from '../utils/utils.js';
 import SortView from '../view/sort-view.js';
 import PointsListView from '../view/points-list-view.js';
 import PointPresenter from './point-presenter.js';
@@ -59,6 +60,11 @@ export default class TripPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
   }
+
+  #handlePointChange = (updatedPoint) => {
+    this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.newId).init(updatedPoint);
+  };
 
   #renderSort() {
     render(this.#sortView, this.#tripContainer, RenderPosition.AFTERBEGIN);
