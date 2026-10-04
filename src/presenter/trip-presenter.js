@@ -1,5 +1,5 @@
 import { render, RenderPosition } from '../framework/render.js';
-import { SORT_ITEMS } from '../const.js';
+import { SortType } from '../const.js';
 import {updateItem} from '../utils/utils.js';
 import SortView from '../view/sort-view.js';
 import PointsListView from '../view/points-list-view.js';
@@ -14,7 +14,7 @@ export default class TripPresenter {
   #tripPoints;
   #destinations;
   #offers;
-  #sortView = new SortView(SORT_ITEMS);
+  #sortView = new SortView(SortType);
   #pointsListComponent = new PointsListView();
   #pointPresenters = new Map();
 

@@ -29,7 +29,13 @@ export const FilterType = {
   PAST: 'past',
 };
 
-export const SORT_ITEMS = ['day', 'event', 'time', 'price', 'offer'];
+export const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer'
+};
 
 export const TEXT_NO_POINTS = {
   everything: 'Click New Event to create your first point',
