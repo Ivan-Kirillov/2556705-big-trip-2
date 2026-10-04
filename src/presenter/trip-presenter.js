@@ -1,9 +1,8 @@
 import { render, replace, RenderPosition } from '../framework/render.js';
 import {SORT_ITEMS} from '../const.js';
 import SortView from '../view/sort-view.js';
-import EventListView from '../view/event-list-view.js';
-import PointEditView from '../view/point-edit-view.js';
-import PointView from '../view/point-view.js';
+import PointsListView from '../view/points-list-view.js';
+import PointPresenter from './point-presenter.js';
 /*
 Реализация текста в случае отсутствия точек маршрута в данный момент не возможна
 import NoPointView from '../view/no-points-view.js';
@@ -15,7 +14,7 @@ export default class TripPresenter {
   #destinations;
   #offers;
   #sortView = new SortView(SORT_ITEMS);
-  #eventListComponent = new EventListView();
+  #pointsListComponent = new PointsListView();
 
   constructor({ tripContainer, pointsModel }) {
     this.#tripContainer = tripContainer;
@@ -37,36 +36,9 @@ export default class TripPresenter {
   }
 
   #renderPoint(point) {
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceFormToCard();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const pointComponent = new PointView(
-      point, this.#destinations, this.#offers, () => {
-        replaceCardToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
-    );
-
-    const pointEditComponent = new PointEditView(
-      point, this.#destinations, this.#offers, () => {
-        replaceFormToCard();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    );
-
-    function replaceCardToForm() {
-      replace(pointEditComponent, pointComponent);
-    }
-
-    function replaceFormToCard() {
-      replace(pointComponent, pointEditComponent);
-    }
-    render(pointComponent, this.#eventListComponent.element);
+    const taskPresenter = new PointPresenter({
+      pointsListContainer: this.#pointsListComponent.element, pointsModel: this.#pointsModel});
+    taskPresenter.init(point);
   }
 
   #renderPoints() {
@@ -76,7 +48,7 @@ export default class TripPresenter {
   }
 
   #renderPointsList() {
-    render(this.#eventListComponent, this.#tripContainer);
+    render(this.#pointsListComponent, this.#tripContainer);
     this.#renderPoints();
   }
 
