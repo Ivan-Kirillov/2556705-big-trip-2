@@ -1,12 +1,13 @@
 import { render, replace } from '../framework/render.js';
-import {generateFilter} from '../mocks/filter.js';
-import {SORT_ITEMS, TEXT_NO_POINTS} from '../const.js';
+import {SORT_ITEMS} from '../const.js';
 import SortView from '../view/sort-view.js';
 import EventListView from '../view/event-list-view.js';
 import PointEditView from '../view/point-edit-view.js';
 import PointView from '../view/point-view.js';
+/*
+Реализация текста в случае отсутствия точек маршрута в данный момент не возможна
 import NoPointView from '../view/no-points-view.js';
-import FilterView from '../view/filter-view.js';
+*/
 export default class TripPresenter {
   #tripContainer;
   #pointsModel;
@@ -25,15 +26,15 @@ export default class TripPresenter {
   init() {
     this.#boardPoints = this.#pointsModel.points;
     // Получаем точки для выбранного фильтра (filteredPoints) и вставляем их в render вместо this.#boardPoints
-
     const filteredPoints = this.#boardPoints;
     const sortView = new SortView(SORT_ITEMS);
     render(sortView, this.#tripContainer);
     render(this.#eventListComponent, this.#tripContainer);
+    /* т.к. filterView был перенесен в main.js, то реализация отрисовки текста при отсутствии точек маршрута невозможна на данный
     if (filteredPoints.length === 0) {
       render(new NoPointView(filterView.noPointsText), this.#eventListComponent.element);
       return;
-    }
+    }*/
 
     for (let i = 0; i < filteredPoints.length; i++) {
       this.#renderPoint(filteredPoints[i]);

@@ -15,6 +15,5 @@ const filters = generateFilter(pointsModel.points);
 render(new HeaderInfoView(), headerInfoElement, 'afterbegin');
 render(new FilterView(filters,TEXT_NO_POINTS), siteFilterElement);
 
-
 const tripPresenter = new TripPresenter({ tripContainer: siteMainEventsElement, pointsModel });
 tripPresenter.init();

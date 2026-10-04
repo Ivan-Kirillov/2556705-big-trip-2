@@ -18,7 +18,7 @@ const points = [
     id: 'point-id-1',
     basePrice: 1100,
     dateFrom: '2019-07-03T20:35:33.845Z',
-    dateTo: '2019-08-09T10:11:24.375Z',
+    dateTo: '2027-08-09T10:11:24.375Z',
     destination: 'destination-id-2',
     isFavorite: true,
     offers: [

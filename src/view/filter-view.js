@@ -1,9 +1,9 @@
 import AbstractView from '../framework/view/abstract-view.js';
 function createFilterItemTemplate(filter) {
-  const {type, points, count} = filter;
+  const {type, count} = filter;
   return (
     `<div class="trip-filters__filter">
-      <input id="filter-${type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${type}" ${type == 'everything' ? 'checked' : ''} ${count == 0 ? 'disabled' : ''}>
+      <input id="filter-${type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${type}" ${type === 'everything' ? 'checked' : ''} ${count === 0 ? 'disabled' : ''}>
       <label class="trip-filters__filter-label" for="filter-${type}">${type.toUpperCase()}</label>
     </div>`
   );
@@ -35,38 +35,24 @@ export default class FilterView extends AbstractView {
 
   get filteredPoints() {
     const formFilters = this.element;
-    // Создаем массив и наполняем его "живой" коллекцией filter-input
-    const filterInputs = formFilters.getElementsByClassName('trip-filters__filter-input');
-
-
-
-
-    // Добавляет обработчики событий для всех filter-input (через родителя, т.е. form задать обработчик почему-то не удалось)
-
-    // Находим выбранный фильтер и выбираем точки для данного фильтра(filterPoints)
-    const filterInputChecked = filterInputs.find((input) => input.checked == true);
-    const checkedFilter = this.#filters.find((value) => filterInputChecked.id == `filter-${value.type}`);
-    let filterPoints = checkedFilter.points;
+    const filterInputs = [...formFilters.getElementsByClassName('trip-filters__filter-input')];
+    const filterInputChecked = filterInputs.find((input) => input.checked === true);
+    const checkedFilter = this.#filters.find((value) => filterInputChecked.id === `filter-${value.type}`);
+    const filterPoints = checkedFilter.points;
     // Проверка как поведет сайт, если filterPoints будет пустой;
-    // filterPoints = [];
+    // filterPoints = []; Но надо поменять const на let у filterPoints
     return filterPoints;
   }
 
   get noPointsText() {
-    const formFilters = document.querySelector('.trip-filters');
-    // Создаем массив и наполняем его "живой" коллекцией filter-input
-    const filterInputs = [];
-    for (let i = 0; i < formFilters.children.length - 1; i++) {
-      const filterInput = formFilters.children[i].children[0];
-      filterInputs.push(filterInput);
-    }
-
-    const filterInputChecked = filterInputs.find((input) => input.checked == true);
-    const checkedFilter = this.#filters.find((value) => filterInputChecked.id == `filter-${value.type}`);
+    const formFilters = this.element;
+    const filterInputs = [...formFilters.getElementsByClassName('trip-filters__filter-input')];
+    const filterInputChecked = filterInputs.find((input) => input.checked === true);
+    const checkedFilter = this.#filters.find((value) => filterInputChecked.id === `filter-${value.type}`);
 
     let noPointsText = '';
     Object.entries(this.#textNoPoints).forEach((value) => {
-      if(value[0] == checkedFilter.type) {
+      if(value[0] === checkedFilter.type) {
         noPointsText = value[1];
       }
     });
