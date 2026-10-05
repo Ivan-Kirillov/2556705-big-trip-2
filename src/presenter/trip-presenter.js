@@ -71,8 +71,8 @@ export default class TripPresenter {
     }
 
     this.#sortPoints(sortType);
-    // - Очищаем список
-    // - Рендерим список заново
+    this.#clearPointsList();
+    this.#renderPointsList();
   };
 
   #handleModeChange = () => {
@@ -102,7 +102,6 @@ export default class TripPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
   }
-
 
   #renderSort() {
     this.#sortView = new SortView({
