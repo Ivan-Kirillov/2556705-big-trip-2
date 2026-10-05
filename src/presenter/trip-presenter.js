@@ -1,5 +1,6 @@
 import { render, RenderPosition } from '../framework/render.js';
-import {updateItem} from '../utils/utils.js';
+import {updateItem, sortPointDay} from '../utils/utils.js';
+import {SortType} from '../const.js';
 import SortView from '../view/sort-view.js';
 import PointsListView from '../view/points-list-view.js';
 import PointPresenter from './point-presenter.js';
@@ -16,6 +17,8 @@ export default class TripPresenter {
   #sortView = null;
   #pointsListComponent = new PointsListView();
   #pointPresenters = new Map();
+  #currentSortType = SortType.DEFAULT;
+  #sourcedTripPoints = [];
 
   constructor({ tripContainer, pointsModel }) {
     this.#tripContainer = tripContainer;
@@ -25,9 +28,16 @@ export default class TripPresenter {
   }
 
   init() {
-    this.#tripPoints = this.#pointsModel.points;
+    this.#tripPoints = [...this.#pointsModel.points];
+    // 1. В отличии от сортировки по любому параметру,
+    // исходный порядок можно сохранить только одним способом -
+    // сохранив исходный массив:
+
     // Получаем точки для выбранного фильтра (filteredPoints) и вставляем их в render вместо this.#tripPoints
     // const filteredPoints = this.#tripPoints;
+
+    this.#sourcedTripPoints = [...this.#pointsModel.points];
+
     this.#renderTrip();
     /* т.к. filterView был перенесен в main.js, то реализация отрисовки текста при отсутствии точек маршрута невозможна на данный
     if (filteredPoints.length === 0) {
@@ -38,7 +48,31 @@ export default class TripPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
+    this.#sourcedTripPoints = updateItem(this.#sourcedTripPoints, updatedPoint);
     this.#pointPresenters.get(updatedPoint.newId).init(updatedPoint);
+  };
+
+  #sortPoints(sortType) {
+    switch (sortType) {
+      case SortType.DAY: this.#tripPoints.sort(sortPointDay);
+        break;
+      default:
+        // 3. А когда пользователь захочет "вернуть всё, как было",
+        // мы просто запишем в _tripPoints исходный массив
+        this.#tripPoints = [...this.#sourcedTripPoints];
+    }
+
+    this.#currentSortType = sortType;
+  }
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+    // - Очищаем список
+    // - Рендерим список заново
   };
 
   #handleModeChange = () => {
@@ -69,11 +103,6 @@ export default class TripPresenter {
     this.#pointPresenters.clear();
   }
 
-  #handleSortTypeChange = (sortType) => {
-    // - Сортируем задачи
-    // - Очищаем список
-    // - Рендерим список заново
-  };
 
   #renderSort() {
     this.#sortView = new SortView({
