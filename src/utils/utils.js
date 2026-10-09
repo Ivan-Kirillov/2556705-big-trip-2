@@ -35,5 +35,11 @@ function sortPointDay(pointA, pointB) {
   return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
 }
 
-export {humanizeTaskDueDate, getDuration, getRandomArrayElement, updateItem, sortPointDay};
+function isOffersInPoint (point, offers) {
+  const typeOffers = offers.find((off) => off.type === point.type).offers;
+  const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
+  return pointOffers !== null;
+}
+
+export {humanizeTaskDueDate, getDuration, getRandomArrayElement, updateItem, sortPointDay, isOffersInPoint};
 

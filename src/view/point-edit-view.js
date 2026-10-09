@@ -1,44 +1,51 @@
 // Вставлять в .trip-events__list
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { DATE_FORMAT, POINT_TYPES } from '../const.js';
-import { humanizeTaskDueDate } from '../utils/utils.js';
+import { humanizeTaskDueDate, isOffersInPoint } from '../utils/utils.js';
 const upFirstLetter = (word) => `${word[0].toUpperCase()}${word.slice(1)}`;
 const formatOfferTitle = (title) => title.split(' ').join('_');
+
+function createPointEditOffersTemplate(typeOffers, pointOffers, pointId, isOffers) {
+  return (
+    `${isOffers ?
+      `<section class="event__section  event__section--offers">
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+        <div class="event__available-offers">
+          ${typeOffers.map((typeOffer) => (
+            `<div class="event__offer-selector">
+              <input class="event__offer-checkbox  visually-hidden" id="event-offer-${formatOfferTitle(typeOffer.title)}-${pointId}" type="checkbox" name="event-offer-${formatOfferTitle(typeOffer.title)}" ${pointOffers.map((offer) => offer.id).includes(typeOffer.id) ? 'checked' : ''}>
+              <label class="event__offer-label" for="event-offer-${formatOfferTitle(typeOffer.title)}-${pointId}">
+              <span class="event__offer-title">${typeOffer.title}</span>
+                &plus;&euro;&nbsp;
+              <span class="event__offer-price">${typeOffer.price}</span>
+            </label>
+          </div>`
+          )).join('')}
+        </div>
+      </section>` : ''}`
+  );
+}
 
 function createPointEditTemplate(point, destinations, offers) {
   const typeOffers = offers.find((off) => off.type === point.type).offers;
   const pointOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
   const pointDestination = destinations.find((dest) => dest.id === point.destination);
-  const { dateFrom, dateTo, basePrice, type } = point;
+  const { dateFrom, dateTo, basePrice, type, isOffers } = point;
   const { name } = pointDestination || {};
   const { description } = pointDestination || {};
   const pointId = point.id || 0;
+  const offersTemplate = createPointEditOffersTemplate(typeOffers, pointOffers, pointId, isOffers);
 
   return (
     `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
         <section class="event__details">
-          <section class="event__section  event__section--offers">
-            <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-            <div class="event__available-offers">
-              ${typeOffers.map((typeOffer) => (
-      `<div class="event__offer-selector">
-                <input class="event__offer-checkbox  visually-hidden" id="event-offer-${formatOfferTitle(typeOffer.title)}-${pointId}" type="checkbox" name="event-offer-${formatOfferTitle(typeOffer.title)}" ${pointOffers.map((offer) => offer.id).includes(typeOffer.id) ? 'checked' : ''}>
-                <label class="event__offer-label" for="event-offer-${formatOfferTitle(typeOffer.title)}-${pointId}">
-                  <span class="event__offer-title">${typeOffer.title}</span>
-                    &plus;&euro;&nbsp;
-                  <span class="event__offer-price">${typeOffer.price}</span>
-                </label>
-              </div>`
-    )).join('')}
-            </div>
-          </section>
+          ${offersTemplate}
           <section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">${name}</h3>
             <p class="event__destination-description">${description}</p>
           </section>
         </section>
-
         <header class="event__header">
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-${pointId}">
@@ -93,28 +100,47 @@ function createPointEditTemplate(point, destinations, offers) {
     </li>`
   );
 }
-export default class PointEditView extends AbstractView {
-  #point;
-  #destinations;
-  #offers;
+export default class PointEditView extends AbstractStatefulView {
+  #destinations = null;
+  #offers = null;
   #handleFormSubmit = null;
   constructor(point, destinations, offers, onFormSubmit) {
     super();
-    this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
+    this._setState(PointEditView.parsePointToState(point, offers));
 
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formSubmitHandler);
   }
 
   get template() {
-    return createPointEditTemplate(this.#point, this.#destinations, this.#offers);
+    return createPointEditTemplate(this._state, this.#destinations, this.#offers);
   }
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(PointEditView.parseStateToPoint(this._state));
   };
+
+  static parsePointToState(point, offers) {
+    return {...point,
+      isOffers: isOffersInPoint(point, offers),
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = {...state};
+
+    if (!point.isOffers) {
+      point.isOffers = null;
+    }
+
+    delete point.isOffers;
+
+    return point;
+  }
 }
+
+
