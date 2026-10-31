@@ -1,26 +1,19 @@
 import Observable from '../framework/observable.js';
-import { getRandomPoint } from '../mocks/points.js';
-import { offers } from '../mocks/offers.js';
-import { destinations } from '../mocks/destinations.js';
+import {UpdateType} from '../const.js';
 
-const POINT_COUNT = 3;
 export default class PointsModel extends Observable {
   #dataApiService = null;
-  #points = Array.from({length: POINT_COUNT}, getRandomPoint);
-  #offers = offers;
-  #destinations = destinations;
+  #points = [];
+  #offers = null;
+  #destinations = null;
 
   constructor({dataApiService}) {
     super();
     this.#dataApiService = dataApiService;
-    // this.#offers = this.#dataApiService.parseResponse(this.#dataApiService.offers);
-    // this.#destinations = this.#dataApiService.parseResponse(this.#dataApiService.destinations);
+    this.#offers = this.#dataApiService.offers;
+    this.#destinations = this.#dataApiService.destinations;
     this.#dataApiService.points.then((tasks) => {
-      console.log(tasks);
-      // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
-      // а ещё на сервере используется snake_case, а у нас camelCase.
-      // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?
-      // Есть вариант получше - паттерн "Адаптер"
+      сonsole.log(tasks.map(this.#adaptToClient));
     });
   }
 
@@ -36,17 +29,36 @@ export default class PointsModel extends Observable {
     return this.#destinations;
   }
 
-  updatePoint(updateType, update) {
+  async init() {
+    try {
+      const points = await this.#dataApiService.points;
+      this.#points = points.map(this.#adaptToClient);
+    } catch(err) {
+      this.#points = [];
+    }
+
+    this._notify(UpdateType.INIT);
+  }
+
+  async updatePoint(updateType, update) {
     const index = this.#points.findIndex((point) => point.newId === update.newId);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting point');
     }
 
-    this.#points = [...this.#points.map((point, i) => (i === index) ? update : point)];
+    try {
+      const response = await this.#dataApiService.updatePoint(update);
+      const updatedPoit = this.#adaptToClient(response);
+      this.#points = [...this.#points.map((point, i) => (i === index) ? updatedPoit : point)];
 
-    this._notify(updateType, update);
+      this._notify(updateType, updatedPoit);
+
+    } catch(err) {
+      throw new Error('Can\'t update point');
+    }
   }
+
 
   addPoint(updateType, update) {
     this.#points = [
@@ -70,5 +82,21 @@ export default class PointsModel extends Observable {
     ];
 
     this._notify(updateType);
+  }
+
+  #adaptToClient(point) {
+    const adaptedPoint = {...point,
+      // На клиенте дата хранится как экземпляр Date
+      dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'],
+      dateTo: point['date_to'] !== null ? new Date(point['date_to']) : point['date_to'],
+      isFavorite: point['is_favorite'],
+    };
+
+    // Ненужные ключи мы удаляем
+    delete adaptedPoint['date_from'];
+    delete adaptedPoint['date_to'];
+    delete adaptedPoint['is_favorite'];
+
+    return adaptedPoint;
   }
 }

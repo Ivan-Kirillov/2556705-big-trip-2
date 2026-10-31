@@ -46,4 +46,8 @@ render(newPointButtonComponent, headerInfoElement);
 
 filterPresenter.init();
 tripPresenter.init();
+pointsModel.init()
+  .finally(() => {
+    render(newPointButtonComponent, headerInfoElement);
+  });
 
