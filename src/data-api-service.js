@@ -6,7 +6,6 @@ const Method = {
   POST: 'POST',
   DELETE: 'DELETE',
 };
-
 export default class DataApiService extends ApiService {
   get points() {
     return this._load({url: 'points'})
