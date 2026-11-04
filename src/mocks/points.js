@@ -41,7 +41,7 @@
 
 // function getRandomPoint() {
 //   return {
-//     newId: nanoid(),
+//     id: nanoid(),
 //     ...getRandomArrayElement(points),
 //   };
 // }

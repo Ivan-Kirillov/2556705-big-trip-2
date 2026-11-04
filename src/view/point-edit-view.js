@@ -94,7 +94,7 @@ function createPointEditPriceTemplate(basePrice, pointId, isDisabled) {
         <span class="visually-hidden">Price</span>
         &euro;
       </label>
-      <input class="event__input  event__input--price" id="event-price-${pointId}" type="number" min="0" name="event-price" value=${basePrice} autocomplete="off" ${isDisabled ? 'disabled' : ''}>
+      <input class="event__input  event__input--price" id="event-price-${pointId}" type="number" min="0" name="event-price" value=${(basePrice) ? basePrice : 0} autocomplete="off" ${isDisabled ? 'disabled' : ''}>
     </div>`
   );
 }
@@ -133,7 +133,11 @@ function createPointEditTemplate(point, destinations, offers) {
     point.type = 'flight';
   }
 
-  const typeOffers = offers?.find((offer) => offer.type === point.type).offers;
+  if(!point.type) {
+    point.type = 'flight';
+  }
+
+  const typeOffers = offers?.find((offer) => offer.type === point.type)?.offers;
   const pointOffers = (typeOffers) ? typeOffers.filter((typeOffer) => point.offers?.includes(typeOffer.id)) : '';
   const pointDestination = destinations?.find((dest) => dest.id === point.destination) || '';
 
@@ -162,7 +166,7 @@ function createPointEditTemplate(point, destinations, offers) {
           ${buttonsTemplate}
         </header>
         <section class="event__details">
-          ${(typeOffers.length) ? offersTemplate : ''}
+          ${(typeOffers?.length) ? offersTemplate : ''}
           ${(point.destination) ? destinationDescriptionTemplate : ''}
           ${(point.destination) ? picturesTemplate : ''}
         </section>
@@ -220,7 +224,7 @@ export default class PointEditView extends AbstractStatefulView {
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
-    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
+    // this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
     this.#setDatepickers();
   };

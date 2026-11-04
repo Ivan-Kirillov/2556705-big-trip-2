@@ -120,7 +120,7 @@ export default class TripPresenter {
     // В зависимости от типа изменений решаем, что делать:
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#pointPresenters.get(data.newId).init(data);
+        this.#pointPresenters.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
         this.#clearTrip();
@@ -173,7 +173,7 @@ export default class TripPresenter {
       onModeChange: this.#handleModeChange
     });
     pointPresenter.init(point);
-    this.#pointPresenters.set(point.newId, pointPresenter);
+    this.#pointPresenters.set(point.id, pointPresenter);
   }
 
   #renderPoints(points) {
@@ -194,7 +194,9 @@ export default class TripPresenter {
 
   #clearTrip(resetSortType = false) {
     this.#newPointPresenter.destroy();
-    this.#headerInfoPresenter.destroy();
+    if(this.#headerInfoPresenter) {
+      this.#headerInfoPresenter.destroy();
+    }
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
     remove(this.#sortComponent);
@@ -210,19 +212,20 @@ export default class TripPresenter {
   }
 
   #renderTrip() {
-    const points = this.points;
-    const pointsCount = points.length;
-    if(pointsCount === 0) {
-      this.#renderNoPoints();
-      return;
-    }
-    this.#renderHeader();
-
     if (this.#isLoading) {
       this.#renderLoading();
       return;
     }
 
+    const points = this.points;
+    const pointsCount = points.length;
+
+    if(pointsCount === 0) {
+      this.#renderNoPoints();
+      return;
+    }
+
+    this.#renderHeader();
     this.#renderSort();
     render(this.#pointsListComponent, this.#tripContainer);
     this.#renderPoints(points);

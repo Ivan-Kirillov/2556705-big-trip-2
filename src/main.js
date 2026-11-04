@@ -12,7 +12,9 @@ const END_POINT = 'https://22.objects.htmlacademy.pro/big-trip';
 const siteMainEventsElement = document.querySelector('.trip-events');
 const headerInfoElement = document.querySelector('.trip-main');
 const siteFilterElement = document.querySelector('.trip-main__trip-controls');
-const pointsModel = new PointsModel();
+const pointsModel = new PointsModel({
+  dataApiService: new DataApiService(END_POINT, AUTHORIZATION)
+});
 
 const filterModel = new FilterModel({
   dataApiService: new DataApiService(END_POINT, AUTHORIZATION)
@@ -41,8 +43,6 @@ function handleNewPointButtonClick() {
   tripPresenter.createPoint();
   newPointButtonComponent.element.disabled = true;
 }
-
-render(newPointButtonComponent, headerInfoElement);
 
 filterPresenter.init();
 tripPresenter.init();
