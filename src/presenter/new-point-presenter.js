@@ -1,20 +1,20 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import PointEditView from '../view/point-edit-view.js';
 import {UserAction, UpdateType} from '../const.js';
-import { destinations } from '../mocks/destinations.js';
-import { offers } from '../mocks/offers.js';
 
 export default class NewPointPresenter {
   #pointListContainer = null;
   #handleDataChange = null;
   #handleDestroy = null;
+  #pointsModel = null;
 
   #pointEditComponent = null;
 
-  constructor({pointListContainer, onDataChange, onDestroy}) {
+  constructor({pointListContainer, onDataChange, onDestroy, pointsModel}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
+    this.#pointsModel = pointsModel;
   }
 
   init() {
@@ -23,8 +23,8 @@ export default class NewPointPresenter {
     }
 
     this.#pointEditComponent = new PointEditView({
-      destinations: destinations,
-      offers: offers,
+      destinations: this.#pointsModel.destinations,
+      offers: this.#pointsModel.offers,
       onFormSubmit: this.#handleFormSubmit,
       onDeleteClick: this.#handleDeleteClick
     });

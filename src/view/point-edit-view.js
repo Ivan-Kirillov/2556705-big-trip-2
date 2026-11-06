@@ -123,20 +123,6 @@ function createPointEditPicturesTemplate(pointPictures) {
 }
 
 function createPointEditTemplate(point, destinations, offers) {
-  if (Object.keys(point).length === 0) {
-    point.basePrice = 0;
-    point.dateFrom = '';
-    point.dateTo = '';
-    point.destination = '';
-    point.isFavorite = false;
-    point.offers = null;
-    point.type = 'flight';
-  }
-
-  if(!point.type) {
-    point.type = 'flight';
-  }
-
   const typeOffers = offers?.find((offer) => offer.type === point.type)?.offers;
   const pointOffers = (typeOffers) ? typeOffers.filter((typeOffer) => point.offers?.includes(typeOffer.id)) : '';
   const pointDestination = destinations?.find((dest) => dest.id === point.destination) || '';
@@ -166,7 +152,13 @@ function createPointEditTemplate(point, destinations, offers) {
           ${buttonsTemplate}
         </header>
         <section class="event__details">
-          ${(typeOffers?.length) ? offersTemplate : ''}
+          ${(typeOffers?.length) ?
+            offersTemplate :
+            `<section class="event__section  event__section--offers">
+              <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+              <div class="event__available-offers">
+              </div>
+            </section>`}
           ${(point.destination) ? destinationDescriptionTemplate : ''}
           ${(point.destination) ? picturesTemplate : ''}
         </section>
@@ -224,7 +216,7 @@ export default class PointEditView extends AbstractStatefulView {
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typeChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
-    // this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
+    this.element.querySelector('.event__available-offers').addEventListener('change', this.#offerChangeHandler);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
     this.#setDatepickers();
   };
@@ -311,10 +303,18 @@ export default class PointEditView extends AbstractStatefulView {
   };
 
   static parsePointToState(point) {
-    return { ...point,
+    return {
       isDisabled: false,
       isSaving: false,
       isDeleting: false,
+      basePrice: 0,
+      dateFrom: '',
+      dateTo: '',
+      destination: '',
+      isFavorite: false,
+      offers: null,
+      type: 'flight',
+      ...point,
     };
   }
 

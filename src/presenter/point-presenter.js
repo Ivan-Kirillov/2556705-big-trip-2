@@ -140,11 +140,11 @@ export default class PointPresenter {
   }
 
   #replaceFormToCard() {
-    // Делаем кнопку add new event разблокированной
-    document.querySelector('.trip-main__event-add-btn').disabled = false;
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
+    // Делаем кнопку add new event разблокированной
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   }
 
   #handleEditClick = () => {
@@ -157,15 +157,17 @@ export default class PointPresenter {
       UpdateType.MINOR,
       update,
     );
+    // Делаем кнопку add new event разблокированной
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   };
 
   #handleDeleteClick = (point) => {
-    // Делаем кнопку add new event разблокированной
-    document.querySelector('.trip-main__event-add-btn').disabled = false;
     this.#handleDataChange(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,
       point,
     );
+    // Делаем кнопку add new event разблокированной
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   };
 }

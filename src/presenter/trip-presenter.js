@@ -20,10 +20,9 @@ export default class TripPresenter {
   #loadingComponent = new LoadingView();
   #tripContainer = null;
   #headerInfoContainer = null;
-  #pointsModel = null;
   #sortComponent = null;
   #noPointComponent = null;
-
+  #pointsModel = null;
   #filterModel = null;
   #pointPresenters = new Map();
   #newPointPresenter = null;
@@ -46,7 +45,8 @@ export default class TripPresenter {
     this.#newPointPresenter = new NewPointPresenter({
       pointListContainer: this.#pointsListComponent.element,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy
+      onDestroy: onNewPointDestroy,
+      pointsModel: this.#pointsModel
     });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -220,14 +220,14 @@ export default class TripPresenter {
     const points = this.points;
     const pointsCount = points.length;
 
+    this.#renderHeader();
+    this.#renderSort();
+    render(this.#pointsListComponent, this.#tripContainer);
+
     if(pointsCount === 0) {
       this.#renderNoPoints();
       return;
     }
-
-    this.#renderHeader();
-    this.#renderSort();
-    render(this.#pointsListComponent, this.#tripContainer);
     this.#renderPoints(points);
   }
 }
