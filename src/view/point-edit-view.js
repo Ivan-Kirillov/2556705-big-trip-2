@@ -257,7 +257,7 @@ export default class PointEditView extends AbstractStatefulView {
 };
 
   #priceChangeHandler = (evt) => {
-    this._setState({ ...this._state, basePrice: evt.target.value });
+    this._setState({ ...this._state, basePrice: Number(evt.target.value) });
   };
 
   #dateFromCloseHandler = ([userDate]) => {
@@ -308,11 +308,11 @@ export default class PointEditView extends AbstractStatefulView {
       isSaving: false,
       isDeleting: false,
       basePrice: 0,
-      dateFrom: '',
-      dateTo: '',
+      dateFrom: new Date(),
+      dateTo: new Date(),
       destination: '',
       isFavorite: false,
-      offers: null,
+      offers: [],
       type: 'flight',
       ...point,
     };

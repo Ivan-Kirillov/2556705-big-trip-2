@@ -62,7 +62,7 @@ export default class DataApiService extends ApiService {
       // На сервере дата хранится в ISO формате
       'date_from': point.dateFrom instanceof Date ? point.dateFrom.toISOString() : null,
       'date_to': point.dateTo instanceof Date ? point.dateTo.toISOString() : null,
-      'base_price': point.basePrice,
+      'base_price': Number(point.basePrice),
       'is_favorite': point.isFavorite,
     };
 

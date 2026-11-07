@@ -7,14 +7,21 @@ function createHeaderInfoTemplate(points, destinations) {
     total + (Number(value) || 0), 0);
   const totalPointDestinations = points.map((point) => point.destination);
   const totalDestinations = totalPointDestinations.map((destination) => destinations?.find((dest) => dest.id === destination));
-  const totalNamesDestinations = totalDestinations.map((destination) => destination?.name).join('-');
-  const startTimeTrip = points[0].dateFrom;
-  const endTimeTrip = points[points.length - 1].dateTo;
+  const totalNamesDestinations = totalDestinations.map((destination) => destination?.name);
+  const lowDestinations = [];
+  totalNamesDestinations.forEach((destination, i, array) => {
+    if(i === 0 || i === array.length - 1) {
+      lowDestinations.push(destination);
+    }
+  });
+  const startTimeTrip = points[0]?.dateFrom;
+  const endTimeTrip = points[points.length - 1]?.dateTo;
   return (
     `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
-        <h1 class="trip-info__title">${totalNamesDestinations}</h1>
-
+        <h1 class="trip-info__title">${(totalDestinations.length <= 3) ?
+          totalNamesDestinations.join('-') :
+          lowDestinations.join('-')}</h1>
         <p class="trip-info__dates">${humanizePointDueDate(startTimeTrip, DATE_FORMAT['date-month'])} -
         ${humanizePointDueDate(endTimeTrip, DATE_FORMAT['date-month'])}</p>
       </div>

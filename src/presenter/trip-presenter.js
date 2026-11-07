@@ -217,17 +217,17 @@ export default class TripPresenter {
       return;
     }
 
+    render(this.#pointsListComponent, this.#tripContainer);
+
     const points = this.points;
     const pointsCount = points.length;
-
-    this.#renderHeader();
-    this.#renderSort();
-    render(this.#pointsListComponent, this.#tripContainer);
 
     if(pointsCount === 0) {
       this.#renderNoPoints();
       return;
     }
+    this.#renderHeader();
+    this.#renderSort();
     this.#renderPoints(points);
   }
 }
