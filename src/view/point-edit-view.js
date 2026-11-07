@@ -328,4 +328,3 @@ export default class PointEditView extends AbstractStatefulView {
   }
 }
 
-
