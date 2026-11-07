@@ -20,8 +20,8 @@ function createHeaderInfoTemplate(points, destinations) {
     `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
         <h1 class="trip-info__title">${(totalDestinations.length <= 3) ?
-          totalNamesDestinations.join('-') :
-          lowDestinations.join('-')}</h1>
+      totalNamesDestinations.join('-') :
+      lowDestinations.join('-')}</h1>
         <p class="trip-info__dates">${humanizePointDueDate(startTimeTrip, DATE_FORMAT['date-month'])} -
         ${humanizePointDueDate(endTimeTrip, DATE_FORMAT['date-month'])}</p>
       </div>
