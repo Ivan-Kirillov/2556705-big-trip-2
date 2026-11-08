@@ -149,7 +149,7 @@ export default class TripPresenter {
   };
 
   #renderHeader() {
-    const points = this.points;
+    const points = this.#pointsModel.points;
     this.#headerInfoPresenter = new HeaderInfoPresenter({
       pointsModel: this.#pointsModel,
       headerInfoContainer: this.#headerInfoContainer

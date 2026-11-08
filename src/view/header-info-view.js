@@ -33,10 +33,10 @@ function createHeaderInfoTemplate(points, destinations, offers) {
   const totalPointDestinations = points.map((point) => point.destination);
   const totalDestinations = totalPointDestinations.map((destination) => destinations?.find((dest) => dest.id === destination));
   const totalNamesDestinations = totalDestinations.map((destination) => destination?.name);
-  const lowDestinations = [];
+  const manyDestinations = [];
   totalNamesDestinations.forEach((destination, i, array) => {
     if(i === 0 || i === array.length - 1) {
-      lowDestinations.push(destination);
+      manyDestinations.push(destination);
     }
   });
   const startTimeTrip = points[0]?.dateFrom;
@@ -46,7 +46,7 @@ function createHeaderInfoTemplate(points, destinations, offers) {
       <div class="trip-info__main">
         <h1 class="trip-info__title">${(totalDestinations.length <= 3) ?
       totalNamesDestinations.join('-') :
-      lowDestinations.join('-')}</h1>
+      manyDestinations.join('...')}</h1>
         <p class="trip-info__dates">${humanizePointDueDate(startTimeTrip, DATE_FORMAT['date-month'])} -
         ${humanizePointDueDate(endTimeTrip, DATE_FORMAT['date-month'])}</p>
       </div>
