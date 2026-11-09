@@ -149,21 +149,8 @@ export default class TripPresenter {
   };
 
   #renderHeader() {
-    const points = this.#pointsModel.points;
-    let sortedPoints = [];
-    switch (this.#currentSortType) {
-      case SortType.DAY:
-        sortedPoints = [...points].sort(sortPointDay);
-        break;
-      case SortType.TIME:
-        sortedPoints = [...points].sort(sortPointTime);
-        break;
-      case SortType.PRICE:
-        sortedPoints = [...points].sort(sortPointPrice);
-        break;
-      default:
-        sortedPoints = [...points];
-    }
+    const sortedPoints = [...this.#pointsModel.points].sort(sortPointDay);
+
     this.#headerInfoPresenter = new HeaderInfoPresenter({
       pointsModel: this.#pointsModel,
       headerInfoContainer: this.#headerInfoContainer
