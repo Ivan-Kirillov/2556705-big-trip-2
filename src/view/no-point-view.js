@@ -2,9 +2,9 @@ import AbstractView from '../framework/view/abstract-view.js';
 
 const NoPointsTextType = {
   everything: 'Click New Event to create your first point',
-  past: 'There are no past event now',
-  present: 'There are no past present now',
-  future: 'There are no future event now',
+  past: 'There are no past events now',
+  present: 'There are no present events now',
+  future: 'There are no future events now',
 };
 
 function createNoPointTemplate(filterType) {

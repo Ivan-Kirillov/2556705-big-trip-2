@@ -17,7 +17,7 @@ const TimeLimit = {
 };
 export default class TripPresenter {
   #pointsListComponent = new PointsListView();
-  #loadingComponent = new LoadingView();
+  #loadingComponent = null;
   #tripContainer = null;
   #headerInfoContainer = null;
   #sortComponent = null;
@@ -77,7 +77,6 @@ export default class TripPresenter {
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
-
   }
 
   #handleModeChange = () => {
@@ -182,6 +181,7 @@ export default class TripPresenter {
   }
 
   #renderLoading() {
+    this.#loadingComponent = new LoadingView(this.#pointsModel);
     render(this.#loadingComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
   }
 

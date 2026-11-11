@@ -1,15 +1,24 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-function createNoPointTemplate() {
+function createLoadingTemplate(messageFromServer) {
   return (
     `<p class="trip-events__msg">
-      Loading...
+      ${messageFromServer}
     </p>`
   );
 }
 
 export default class LoadingView extends AbstractView {
+  #pointsModel = null;
+  #messageFromServer = null;
+
+  constructor(PointsModel) {
+    super();
+    this.#pointsModel = PointsModel;
+    this.#messageFromServer = this.#pointsModel.messageFromServer() || 'Loading';
+  }
+
   get template() {
-    return createNoPointTemplate();
+    return createLoadingTemplate(this.#messageFromServer);
   }
 }
