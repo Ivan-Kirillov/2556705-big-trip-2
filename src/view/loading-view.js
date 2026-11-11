@@ -15,7 +15,7 @@ export default class LoadingView extends AbstractView {
   constructor(PointsModel) {
     super();
     this.#pointsModel = PointsModel;
-    this.#messageFromServer = this.#pointsModel.messageFromServer() || 'Loading';
+    this.#messageFromServer = this.#pointsModel.messageFromServer || 'Loading';
   }
 
   get template() {

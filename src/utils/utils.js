@@ -21,12 +21,9 @@ function getDuration(start, end) {
     case totalMinutes < MINUTES_IN_HOUR:
       return minutesStringFormat;
     case totalMinutes < (MINUTES_IN_HOUR * HOURS_IN_DAY):
-      return `${hoursStringFormat}
-      ${minutesStringFormat}`;
+      return `${hoursStringFormat} ${minutesStringFormat}`;
     default:
-      return `${daysStringFormat}
-      ${hoursStringFormat}
-      ${minutesStringFormat}`;
+      return `${daysStringFormat} ${hoursStringFormat} ${minutesStringFormat}`;
   }
 }
 
