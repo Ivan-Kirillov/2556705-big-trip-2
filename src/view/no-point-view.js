@@ -1,5 +1,5 @@
-import AbstractView from '../framework/view/abstract-view.js';
 import { NO_POINTS_TEXT_TYPE } from '../const.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 function createNoPointTemplate(filterType) {
   const noPointTextValue = NO_POINTS_TEXT_TYPE[filterType];

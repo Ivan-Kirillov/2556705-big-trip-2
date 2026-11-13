@@ -71,7 +71,6 @@ export default class TripPresenter {
 
   init() {
     remove(this.#noPointComponent);
-    // ! Вроде как и без этой строчки код нормально работает -  this.#noPointComponent = null;
     this.#renderTrip();
   }
 

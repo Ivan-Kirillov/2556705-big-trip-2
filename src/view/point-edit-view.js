@@ -1,9 +1,8 @@
-import he from 'he';
-import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { DATE_FORMAT, POINT_TYPES } from '../const.js';
 import { humanizePointDueDate } from '../utils/utils.js';
+import he from 'he';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
-
 import 'flatpickr/dist/flatpickr.min.css';
 
 const upFirstLetter = (word) => `${word[0].toUpperCase()}${word.slice(1)}`;
@@ -126,13 +125,11 @@ function createPointEditTemplate(point, destinations, offers) {
   const typeOffers = offers?.find((offer) => offer.type === point.type)?.offers;
   const pointOffers = (typeOffers) ? typeOffers.filter((typeOffer) => point.offers?.includes(typeOffer.id)) : '';
   const pointDestination = destinations?.find((dest) => dest.id === point.destination) || '';
-
   const pointPictures = pointDestination?.pictures || '';
   const { dateFrom, dateTo, basePrice, type, isDisabled, isSaving, isDeleting } = point;
   const { name } = pointDestination || {};
   const { description } = pointDestination || '';
   const pointId = point.id || 0;
-
   const offersTemplate = createPointEditOffersTemplate(typeOffers, pointOffers, pointId, isDisabled);
   const typesTemplate = createPointEditTypesTemplate(type, pointId, isDisabled);
   const destinationsTemplate = createPointEditDestinationsTemplate(destinations, name, type, pointId, isDisabled);
@@ -204,7 +201,6 @@ export default class PointEditView extends AbstractStatefulView {
     }
   };
 
-  // ! Handlers
   _restoreHandlers = () => {
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
@@ -318,7 +314,6 @@ export default class PointEditView extends AbstractStatefulView {
     delete point.isDisabled;
     delete point.isSaving;
     delete point.isDeleting;
-
     return point;
   }
 }

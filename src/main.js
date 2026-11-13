@@ -19,12 +19,14 @@ const pointsModel = new PointsModel({
 const filterModel = new FilterModel({
   dataApiService: new DataApiService(END_POINT, AUTHORIZATION)
 });
+
 const tripPresenter = new TripPresenter({ tripContainer: siteMainEventsElement,
   headerInfoContainer: headerInfoElement,
   pointsModel,
   filterModel,
   onNewPointDestroy: handleNewPointFormClose
 });
+
 const filterPresenter = new FilterPresenter({
   filterContainer: siteFilterElement,
   filterModel,

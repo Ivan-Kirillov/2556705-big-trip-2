@@ -1,8 +1,8 @@
 export const POINT_TYPES = ['taxi', 'drive', 'bus', 'train', 'ship', 'flight', 'check-in', 'sightseeing', 'restaurant'];
-
 export const HOURS_IN_DAY = 24;
 export const MILLISECONDS_IN_MINUTE = 60000;
 export const MINUTES_IN_HOUR = 60;
+export const DEFAULT_TEXT_FROM_SERVER = 'Loading...';
 export const DATE_FORMAT = {
   'classic-date': 'YYYY-MM-DD',
   'full-date': 'DD/MM/YY hh:mm',
@@ -23,8 +23,6 @@ export const DEFAULT_POINT = {
   offers: [],
   type: POINT_TYPES[0],
 };
-
-export const DEFAULT_TEXT_FROM_SERVER = 'Loading...';
 
 export const NO_POINTS_TEXT_TYPE = {
   everything: 'Click New Event to create your first point',
@@ -59,4 +57,11 @@ export const UpdateType = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
+};
+
+export const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
 };

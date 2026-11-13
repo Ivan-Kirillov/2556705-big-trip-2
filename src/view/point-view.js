@@ -1,6 +1,7 @@
-import AbstractView from '../framework/view/abstract-view.js';
 import { humanizePointDueDate, getDuration } from '../utils/utils.js';
 import { DATE_FORMAT } from '../const.js';
+import AbstractView from '../framework/view/abstract-view.js';
+
 const createPointTemplate = (point, destinations, offers) => {
   const { basePrice, isFavorite, dateFrom, dateTo, type } = point;
   const typeOffers = offers.find((off) => off.type === point.type).offers;
@@ -50,9 +51,9 @@ const createPointTemplate = (point, destinations, offers) => {
 };
 
 export default class PointView extends AbstractView {
-  #point;
-  #destinations;
-  #offers;
+  #point = null;
+  #destinations = null;
+  #offers = null;
   #handleEditClick = null;
   #handleFavoriteClick = null;
 

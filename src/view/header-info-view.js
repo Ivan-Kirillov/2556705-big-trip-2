@@ -1,6 +1,7 @@
 import { humanizePointDueDate, getTotalTripPrice } from '../utils/utils.js';
 import { DATE_FORMAT } from '../const.js';
 import AbstractView from '../framework/view/abstract-view.js';
+
 function createHeaderInfoTemplate(points, destinations, offers) {
   const totalPrice = getTotalTripPrice(points, offers);
   const totalPointDestinations = points.map((point) => point.destination);
@@ -23,7 +24,6 @@ function createHeaderInfoTemplate(points, destinations, offers) {
         <p class="trip-info__dates">${humanizePointDueDate(startTimeTrip, DATE_FORMAT['date-month'])} -
         ${humanizePointDueDate(endTimeTrip, DATE_FORMAT['date-month'])}</p>
       </div>
-
       <p class="trip-info__cost">
         Total: &euro;&nbsp;<span class="trip-info__cost-value">
         ${totalPrice}
