@@ -1,6 +1,6 @@
 import { render, RenderPosition, remove } from '../framework/render.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
-import { sortPointDay, sortPointTime, sortPointPrice } from '../utils/utils.js';
+import { sortPointDay, sortPointTime, sortPointPrice, checkServerError } from '../utils/utils.js';
 import {filter} from '../utils/filter.js';
 import { SortType, UpdateType, UserAction, FilterType } from '../const.js';
 import NoPointView from '../view/no-point-view.js';
@@ -17,7 +17,7 @@ const TimeLimit = {
 };
 export default class TripPresenter {
   #pointsListComponent = new PointsListView();
-  #loadingComponent = new LoadingView();
+  #loadingComponent = null;
   #tripContainer = null;
   #headerInfoContainer = null;
   #sortComponent = null;
@@ -70,6 +70,8 @@ export default class TripPresenter {
   }
 
   init() {
+    remove(this.#noPointComponent);
+    // ! Вроде как и без этой строчки код нормально работает -  this.#noPointComponent = null;
     this.#renderTrip();
   }
 
@@ -77,7 +79,6 @@ export default class TripPresenter {
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
-
   }
 
   #handleModeChange = () => {
@@ -133,6 +134,11 @@ export default class TripPresenter {
       case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
+        // Проверка на ошибку в передаче данных с сервера
+        if (checkServerError(this.#pointsModel.points, this.#pointsModel.offers, this.#pointsModel.destinations)) {
+          this.#isLoading = true;
+        }
+
         this.#renderTrip();
         break;
     }
@@ -182,6 +188,7 @@ export default class TripPresenter {
   }
 
   #renderLoading() {
+    this.#loadingComponent = new LoadingView(this.#pointsModel);
     render(this.#loadingComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
   }
 

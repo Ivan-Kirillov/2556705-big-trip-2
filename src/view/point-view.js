@@ -9,7 +9,7 @@ const createPointTemplate = (point, destinations, offers) => {
   return (
     `<li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime=${humanizePointDueDate(dateFrom, DATE_FORMAT['classic-date'])}>${humanizePointDueDate(dateFrom, DATE_FORMAT['date-month'])}</time>
+        <time class="event__date" datetime=${humanizePointDueDate(dateFrom, DATE_FORMAT['classic-date'])}>${humanizePointDueDate(dateFrom, DATE_FORMAT['date-month']).split(' ').reverse().join(' ')}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
         </div>
@@ -34,7 +34,6 @@ const createPointTemplate = (point, destinations, offers) => {
             <span class="event__offer-price">${offer.price}</span>
           </li>`
     )).join('')}
-
         </ul>
         <button class="event__favorite-btn ${isFavorite ? 'event__favorite-btn--active' : ''} " type="button">
           <span class="visually-hidden">Add to favorite</span>

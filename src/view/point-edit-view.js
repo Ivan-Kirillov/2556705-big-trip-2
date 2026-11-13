@@ -130,7 +130,7 @@ function createPointEditTemplate(point, destinations, offers) {
   const pointPictures = pointDestination?.pictures || '';
   const { dateFrom, dateTo, basePrice, type, isDisabled, isSaving, isDeleting } = point;
   const { name } = pointDestination || {};
-  const { description } = pointDestination || {};
+  const { description } = pointDestination || '';
   const pointId = point.id || 0;
 
   const offersTemplate = createPointEditOffersTemplate(typeOffers, pointOffers, pointId, isDisabled);
@@ -153,14 +153,9 @@ function createPointEditTemplate(point, destinations, offers) {
         </header>
         <section class="event__details">
           ${(typeOffers?.length) ?
-      offersTemplate :
-      `<section class="event__section  event__section--offers">
-              <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-              <div class="event__available-offers">
-              </div>
-            </section>`}
-          ${(point.destination) ? destinationDescriptionTemplate : ''}
-          ${(point.destination) ? picturesTemplate : ''}
+      offersTemplate : '<div class="event__available-offers"> </div>'}
+          ${(point.destination && description) ? destinationDescriptionTemplate : ''}
+          ${(point.destination && pointPictures) ? picturesTemplate : ''}
         </section>
       </form>
     </li>`
@@ -308,8 +303,8 @@ export default class PointEditView extends AbstractStatefulView {
       isSaving: false,
       isDeleting: false,
       basePrice: 0,
-      dateFrom: new Date(),
-      dateTo: new Date(),
+      dateFrom: null,
+      dateTo: null,
       destination: '',
       isFavorite: false,
       offers: [],

@@ -6,6 +6,7 @@ export default class PointsModel extends Observable {
   #points = [];
   #offers = null;
   #destinations = null;
+  #messageFromServer = null;
 
   constructor({ dataApiService }) {
     super();
@@ -22,6 +23,10 @@ export default class PointsModel extends Observable {
 
   get destinations() {
     return this.#destinations;
+  }
+
+  get messageFromServer() {
+    return this.#messageFromServer;
   }
 
   #adaptToClient(point) {
@@ -45,12 +50,15 @@ export default class PointsModel extends Observable {
 
   async init() {
     try {
+      this.#messageFromServer = 'Loading...';
       const points = await this.#dataApiService.points;
       this.#offers = await this.#dataApiService.offers;
       this.#destinations = await this.#dataApiService.destinations;
       this.#points = points.map(this.#adaptToClient);
+      this.#messageFromServer = 'Loading...';
     } catch (err) {
       this.#points = [];
+      this.#messageFromServer = 'Failed to load latest route information';
     }
 
     this._notify(UpdateType.INIT);
