@@ -16,12 +16,21 @@ export const DATE_FORMAT = {
 
 export const DEFAULT_POINT = {
   basePrice: 0,
-  dateFrom: new Date().toISOString(),
-  dateTo: new Date().toISOString(),
+  dateFrom: null,
+  dateTo: null,
   destination: 0,
   isFavorite: false,
   offers: [],
   type: POINT_TYPES[0],
+};
+
+export const DEFAULT_TEXT_FROM_SERVER = 'Loading...';
+
+export const NO_POINTS_TEXT_TYPE = {
+  everything: 'Click New Event to create your first point',
+  present: 'There are no present events now',
+  future: 'There are no future events now',
+  past: 'There are no past events now',
 };
 
 export const FilterType = {

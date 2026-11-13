@@ -55,6 +55,7 @@ export default class PointsModel extends Observable {
       this.#offers = await this.#dataApiService.offers;
       this.#destinations = await this.#dataApiService.destinations;
       this.#points = points.map(this.#adaptToClient);
+      this.#messageFromServer = 'Loading...';
     } catch (err) {
       this.#points = [];
       this.#messageFromServer = 'Failed to load latest route information';

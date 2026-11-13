@@ -1,4 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
+import { DEFAULT_TEXT_FROM_SERVER } from '../const.js';
 
 function createLoadingTemplate(messageFromServer) {
   return (
@@ -10,12 +11,13 @@ function createLoadingTemplate(messageFromServer) {
 
 export default class LoadingView extends AbstractView {
   #pointsModel = null;
-  #messageFromServer = null;
+  #messageFromServer = DEFAULT_TEXT_FROM_SERVER;
 
   constructor(PointsModel) {
     super();
     this.#pointsModel = PointsModel;
-    this.#messageFromServer = this.#pointsModel.messageFromServer || 'Loading';
+    this.#messageFromServer = (this.#pointsModel.messageFromServer) ? this.#pointsModel.messageFromServer : DEFAULT_TEXT_FROM_SERVER;
+    console.log(this.#messageFromServer);
   }
 
   get template() {

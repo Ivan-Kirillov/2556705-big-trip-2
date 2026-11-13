@@ -1,6 +1,6 @@
 import { render, RenderPosition, remove } from '../framework/render.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
-import { sortPointDay, sortPointTime, sortPointPrice } from '../utils/utils.js';
+import { sortPointDay, sortPointTime, sortPointPrice, checkServerError } from '../utils/utils.js';
 import {filter} from '../utils/filter.js';
 import { SortType, UpdateType, UserAction, FilterType } from '../const.js';
 import NoPointView from '../view/no-point-view.js';
@@ -70,6 +70,8 @@ export default class TripPresenter {
   }
 
   init() {
+    remove(this.#noPointComponent);
+    // ! Вроде как и без этой строчки код нормально работает -  this.#noPointComponent = null;
     this.#renderTrip();
   }
 
@@ -132,6 +134,11 @@ export default class TripPresenter {
       case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
+        // Проверка на ошибку в передаче данных с сервера
+        if (checkServerError(this.#pointsModel.points, this.#pointsModel.offers, this.#pointsModel.destinations)) {
+          this.#isLoading = true;
+        }
+
         this.#renderTrip();
         break;
     }
