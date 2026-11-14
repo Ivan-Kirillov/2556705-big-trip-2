@@ -1,6 +1,6 @@
 import { render, RenderPosition, remove } from '../framework/render.js';
 import { sortPointDay, sortPointTime, sortPointPrice} from '../utils/utils.js';
-import {filter} from '../utils/filter.js';
+import {Filter} from '../utils/filter.js';
 import { SortType, UpdateType, UserAction, FilterType } from '../const.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import NoPointView from '../view/no-point-view.js';
@@ -57,7 +57,7 @@ export default class TripPresenter {
   get points() {
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
-    const filteredPoints = filter[this.#filterType](points);
+    const filteredPoints = Filter[this.#filterType](points);
     switch (this.#currentSortType) {
       case SortType.DAY:
         return [...filteredPoints].sort(sortPointDay);
@@ -124,7 +124,6 @@ export default class TripPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
-    // В зависимости от типа изменений решаем, что делать:
     switch (updateType) {
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data);
@@ -140,7 +139,6 @@ export default class TripPresenter {
       case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
-        // Проверка на ошибку в передаче данных с сервера
         if (this.#pointsModel.hasServerError) {
           this.#isLoading = true;
         }

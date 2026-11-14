@@ -24,6 +24,11 @@ export const DEFAULT_POINT = {
   type: POINT_TYPES[0],
 };
 
+export const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
 export const NO_POINTS_TEXT_TYPE = {
   everything: 'Click New Event to create your first point',
   present: 'There are no present events now',

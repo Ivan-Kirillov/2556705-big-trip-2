@@ -1,13 +1,8 @@
 import {render, replace, remove} from '../framework/render.js';
-import {UserAction, UpdateType} from '../const.js';
+import {UserAction, UpdateType, Mode} from '../const.js';
 import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
 
-
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-};
 export default class PointPresenter {
   #pointsListContainer = null;
   #pointComponent = null;
@@ -138,7 +133,6 @@ export default class PointPresenter {
   };
 
   #replaceCardToForm() {
-    // Делаем кнопку add new event заблокированной
     document.querySelector('.trip-main__event-add-btn').disabled = true;
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
@@ -150,7 +144,6 @@ export default class PointPresenter {
     replace(this.#pointComponent, this.#pointEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
-    // Делаем кнопку add new event разблокированной
     document.querySelector('.trip-main__event-add-btn').disabled = false;
   }
 
@@ -164,7 +157,6 @@ export default class PointPresenter {
       UpdateType.MINOR,
       update,
     );
-    // Делаем кнопку add new event разблокированной
     document.querySelector('.trip-main__event-add-btn').disabled = false;
   };
 
@@ -174,7 +166,6 @@ export default class PointPresenter {
       UpdateType.MINOR,
       point,
     );
-    // Делаем кнопку add new event разблокированной
     document.querySelector('.trip-main__event-add-btn').disabled = false;
   };
 }
