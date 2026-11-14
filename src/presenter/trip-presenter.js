@@ -1,5 +1,5 @@
 import { render, RenderPosition, remove } from '../framework/render.js';
-import { sortPointDay, sortPointTime, sortPointPrice, checkServerError } from '../utils/utils.js';
+import { sortPointDay, sortPointTime, sortPointPrice} from '../utils/utils.js';
 import {filter} from '../utils/filter.js';
 import { SortType, UpdateType, UserAction, FilterType } from '../const.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
@@ -15,6 +15,7 @@ const TimeLimit = {
   LOWER_LIMIT: 350,
   UPPER_LIMIT: 1000,
 };
+
 export default class TripPresenter {
   #pointsListComponent = new PointsListView();
   #loadingComponent = null;
@@ -46,7 +47,7 @@ export default class TripPresenter {
       pointListContainer: this.#pointsListComponent.element,
       onDataChange: this.#handleViewAction,
       onDestroy: onNewPointDestroy,
-      pointsModel: this.#pointsModel
+      pointsModel: this.#pointsModel,
     });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -78,6 +79,11 @@ export default class TripPresenter {
   createPoint() {
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+
+    if (this.#noPointComponent) {
+      remove(this.#noPointComponent);
+    }
+
     this.#newPointPresenter.init();
   }
 
@@ -135,7 +141,6 @@ export default class TripPresenter {
         this.#isLoading = false;
         remove(this.#loadingComponent);
         // Проверка на ошибку в передаче данных с сервера
-        console.log(this.#pointsModel.hasServerError);
         if (this.#pointsModel.hasServerError) {
           this.#isLoading = true;
         }

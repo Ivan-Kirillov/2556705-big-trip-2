@@ -45,9 +45,9 @@ function isOffersInPoint(point, offers) {
   return pointOffers !== null;
 }
 
-function checkServerError (points, offers, destinations) {
-  return points.length === 0 || offers.length === 0 || destinations.length === 0;
-}
+// function checkServerError (points, offers, destinations) {
+//   return points.length === 0 || offers.length === 0 || destinations.length === 0;
+// }
 
 function getTotalTripPrice (points, offers) {
   const basePrice = points.map((point) => point.basePrice);
@@ -80,5 +80,5 @@ function getTotalTripPrice (points, offers) {
   return totalPrice;
 }
 
-export { humanizePointDueDate, getDuration, sortPointDay, sortPointTime, sortPointPrice, isOffersInPoint, checkServerError, getTotalTripPrice };
+export { humanizePointDueDate, getDuration, sortPointDay, sortPointTime, sortPointPrice, isOffersInPoint, getTotalTripPrice };
 
