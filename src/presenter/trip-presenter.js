@@ -1,8 +1,8 @@
 import { render, RenderPosition, remove } from '../framework/render.js';
-import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import { sortPointDay, sortPointTime, sortPointPrice, checkServerError } from '../utils/utils.js';
 import {filter} from '../utils/filter.js';
 import { SortType, UpdateType, UserAction, FilterType } from '../const.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import NoPointView from '../view/no-point-view.js';
 import LoadingView from '../view/loading-view.js';
 import SortView from '../view/sort-view.js';
@@ -71,6 +71,7 @@ export default class TripPresenter {
 
   init() {
     remove(this.#noPointComponent);
+    this.#noPointComponent = null;
     this.#renderTrip();
   }
 
@@ -134,7 +135,8 @@ export default class TripPresenter {
         this.#isLoading = false;
         remove(this.#loadingComponent);
         // Проверка на ошибку в передаче данных с сервера
-        if (checkServerError(this.#pointsModel.points, this.#pointsModel.offers, this.#pointsModel.destinations)) {
+        console.log(this.#pointsModel.hasServerError);
+        if (this.#pointsModel.hasServerError) {
           this.#isLoading = true;
         }
 

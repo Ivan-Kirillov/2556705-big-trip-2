@@ -1,7 +1,8 @@
 import {render, replace, remove} from '../framework/render.js';
+import {UserAction, UpdateType} from '../const.js';
 import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
-import {UserAction, UpdateType} from '../const.js';
+
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -40,7 +41,13 @@ export default class PointPresenter {
     );
 
     this.#pointEditComponent = new PointEditView({
-      point: this.#point, destinations: this.#destinations, offers: this.#offers, onFormSubmit: this.#handleFormSubmit, onFormClose: this.#handleFormClose, onDeleteClick: this.#handleDeleteClick
+      point: this.#point,
+      destinations: this.#destinations,
+      offers: this.#offers,
+      onFormSubmit: this.#handleFormSubmit,
+      onFormClose: this.#handleFormClose,
+      onDeleteClick: this.#handleDeleteClick,
+      pointComponent: this.#pointComponent,
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {

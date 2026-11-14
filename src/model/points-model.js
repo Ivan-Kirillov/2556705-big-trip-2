@@ -1,5 +1,6 @@
-import Observable from '../framework/observable.js';
 import { UpdateType } from '../const.js';
+import Observable from '../framework/observable.js';
+
 
 export default class PointsModel extends Observable {
   #dataApiService = null;
@@ -7,6 +8,7 @@ export default class PointsModel extends Observable {
   #offers = null;
   #destinations = null;
   #messageFromServer = null;
+  #hasServerError = null;
 
   constructor({ dataApiService }) {
     super();
@@ -27,6 +29,10 @@ export default class PointsModel extends Observable {
 
   get messageFromServer() {
     return this.#messageFromServer;
+  }
+
+  get hasServerError() {
+    return this.#hasServerError;
   }
 
   #adaptToClient(point) {
@@ -55,9 +61,11 @@ export default class PointsModel extends Observable {
       this.#offers = await this.#dataApiService.offers;
       this.#destinations = await this.#dataApiService.destinations;
       this.#points = points.map(this.#adaptToClient);
+      this.#hasServerError = false;
       this.#messageFromServer = 'Loading...';
     } catch (err) {
       this.#points = [];
+      this.#hasServerError = true;
       this.#messageFromServer = 'Failed to load latest route information';
     }
 
