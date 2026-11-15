@@ -9,6 +9,7 @@ export default class PointsModel extends Observable {
   #messageFromServer = null;
   #hasServerError = null;
 
+
   constructor({ dataApiService }) {
     super();
     this.#dataApiService = dataApiService;
@@ -37,14 +38,13 @@ export default class PointsModel extends Observable {
   #adaptToClient(point) {
     const adaptedPoint = {
       ...point,
-      // На клиенте дата хранится как экземпляр Date
+
       dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'],
       dateTo: point['date_to'] !== null ? new Date(point['date_to']) : point['date_to'],
       basePrice: point['base_price'],
       isFavorite: point['is_favorite'],
     };
 
-    // Ненужные ключи мы удаляем
     delete adaptedPoint['date_from'];
     delete adaptedPoint['date_to'];
     delete adaptedPoint['base_price'];

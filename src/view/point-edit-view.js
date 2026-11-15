@@ -1,12 +1,9 @@
-import { DATE_FORMAT, POINT_TYPES } from '../const.js';
-import { humanizePointDueDate } from '../utils/utils.js';
+import { DateFormat, POINT_TYPES } from '../const.js';
+import { humanizePointDueDate, upFirstLetter, formatOfferTitle } from '../utils/utils.js';
 import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-
-const upFirstLetter = (word) => `${word[0].toUpperCase()}${word.slice(1)}`;
-const formatOfferTitle = (title) => title?.split(' ').join('_');
 
 function createPointEditOffersTemplate(typeOffers, pointOffers, pointId, isDisabled) {
   return (
@@ -78,10 +75,10 @@ function createPointEditTimeTemplate(dateTo, dateFrom, pointId, isDisabled) {
   return (
     `<div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-${pointId}">From</label>
-      <input class="event__input  event__input--time" id="event-start-time-${pointId}" type="text" name="event-start-time" value="${humanizePointDueDate(dateFrom, DATE_FORMAT['full-date'])}" ${isDisabled ? 'disabled' : ''}>
+      <input class="event__input  event__input--time" id="event-start-time-${pointId}" type="text" name="event-start-time" value="${humanizePointDueDate(dateFrom, DateFormat['full-date'])}" ${isDisabled ? 'disabled' : ''}>
       &mdash;
       <label class="visually-hidden" for="event-end-time-${pointId}">To</label>
-      <input class="event__input  event__input--time" id="event-end-time-${pointId}" type="text" name="event-end-time" value="${humanizePointDueDate(dateTo, DATE_FORMAT['full-date'])}" ${isDisabled ? 'disabled' : ''}>
+      <input class="event__input  event__input--time" id="event-end-time-${pointId}" type="text" name="event-end-time" value="${humanizePointDueDate(dateTo, DateFormat['full-date'])}" ${isDisabled ? 'disabled' : ''}>
     </div>`
   );
 }
@@ -122,14 +119,15 @@ function createPointEditPicturesTemplate(pointPictures) {
 }
 
 function createPointEditTemplate(point, destinations, offers) {
+  const { dateFrom, dateTo, basePrice, type, isDisabled, isSaving, isDeleting } = point;
   const typeOffers = offers?.find((offer) => offer.type === point.type)?.offers;
   const pointOffers = (typeOffers) ? typeOffers.filter((typeOffer) => point.offers?.includes(typeOffer.id)) : '';
   const pointDestination = destinations?.find((dest) => dest.id === point.destination) || '';
-  const pointPictures = pointDestination?.pictures || '';
-  const { dateFrom, dateTo, basePrice, type, isDisabled, isSaving, isDeleting } = point;
   const { name } = pointDestination || {};
   const { description } = pointDestination || '';
+  const pointPictures = pointDestination?.pictures || '';
   const pointId = point.id || 0;
+
   const offersTemplate = createPointEditOffersTemplate(typeOffers, pointOffers, pointId, isDisabled);
   const typesTemplate = createPointEditTypesTemplate(type, pointId, isDisabled);
   const destinationsTemplate = createPointEditDestinationsTemplate(destinations, name, type, pointId, isDisabled);

@@ -17,18 +17,17 @@ const TimeLimit = {
 };
 
 export default class TripPresenter {
-  #pointsListComponent = new PointsListView();
-  #loadingComponent = null;
-  #tripContainer = null;
-  #headerInfoContainer = null;
-  #sortComponent = null;
-  #noPointComponent = null;
   #pointsModel = null;
   #filterModel = null;
-  #pointPresenters = new Map();
+  #tripContainer = null;
+  #headerInfoContainer = null;
+  #loadingComponent = null;
+  #sortComponent = null;
+  #noPointComponent = null;
+  #pointsListComponent = new PointsListView();
   #newPointPresenter = null;
   #headerInfoPresenter = null;
-
+  #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
   #filterType = FilterType.EVERYTHING;
   #isLoading = true;
@@ -48,6 +47,7 @@ export default class TripPresenter {
       onDataChange: this.#handleViewAction,
       onDestroy: onNewPointDestroy,
       pointsModel: this.#pointsModel,
+      renderRepeatNoPoints: this.#renderRepeatNoPoints.bind(this)
     });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -82,6 +82,7 @@ export default class TripPresenter {
 
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
+      this.#noPointComponent = null;
     }
 
     this.#newPointPresenter.init();
@@ -202,6 +203,12 @@ export default class TripPresenter {
     });
 
     render(this.#noPointComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderRepeatNoPoints() {
+    if (!this.points?.length) {
+      this.#renderNoPoints();
+    }
   }
 
   #clearTrip(resetSortType = false) {

@@ -3,10 +3,9 @@ import {Filter} from '../utils/filter.js';
 import {FilterType, UpdateType} from '../const.js';
 import FilterView from '../view/filter-view.js';
 export default class FilterPresenter {
-  #filterContainer = null;
   #filterModel = null;
   #pointsModel = null;
-
+  #filterContainer = null;
   #filterComponent = null;
 
   constructor({filterContainer, filterModel, pointsModel}) {

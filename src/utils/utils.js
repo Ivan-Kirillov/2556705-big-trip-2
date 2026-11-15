@@ -1,6 +1,14 @@
 import {HOURS_IN_DAY, MILLISECONDS_IN_MINUTE, MINUTES_IN_HOUR} from '../const';
 import dayjs from 'dayjs';
 
+function upFirstLetter (word) {
+  return `${word[0].toUpperCase()}${word.slice(1)}`;
+}
+
+function formatOfferTitle (title) {
+  return title?.split(' ').join('_');
+}
+
 function humanizePointDueDate(date, format) {
   return date ? dayjs(date).format(format) : '';
 }
@@ -67,5 +75,5 @@ function getTotalTripPrice (points, offers) {
   return totalPrice;
 }
 
-export { humanizePointDueDate, getDuration, sortPointDay, sortPointTime, sortPointPrice, isOffersInPoint, getTotalTripPrice };
+export {upFirstLetter, formatOfferTitle, humanizePointDueDate, getDuration, sortPointDay, sortPointTime, sortPointPrice, isOffersInPoint, getTotalTripPrice };
 

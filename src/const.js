@@ -3,25 +3,15 @@ export const HOURS_IN_DAY = 24;
 export const MILLISECONDS_IN_MINUTE = 60000;
 export const MINUTES_IN_HOUR = 60;
 export const DEFAULT_TEXT_FROM_SERVER = 'Loading...';
-export const DATE_FORMAT = {
+export const AUTHORIZATION = 'Basic 322ffdgffdsfvedhtrwtrwtr';
+export const END_POINT = 'https://22.objects.htmlacademy.pro/big-trip';
+
+export const DateFormat = {
   'classic-date': 'YYYY-MM-DD',
   'full-date': 'DD/MM/YY hh:mm',
   'hours-minutes': 'hh:mm',
   'full-hours-minutes': 'HH:mm',
-  'minutes': 'mm',
-  // 'date': 'DD',
-  'month': 'MMM',
   'date-month': 'DD MMM',
-};
-
-export const DEFAULT_POINT = {
-  basePrice: 0,
-  dateFrom: null,
-  dateTo: null,
-  destination: 0,
-  isFavorite: false,
-  offers: [],
-  type: POINT_TYPES[0],
 };
 
 export const Mode = {
@@ -29,7 +19,7 @@ export const Mode = {
   EDITING: 'EDITING',
 };
 
-export const NO_POINTS_TEXT_TYPE = {
+export const NoPointsTextType = {
   everything: 'Click New Event to create your first point',
   present: 'There are no present events now',
   future: 'There are no future events now',
