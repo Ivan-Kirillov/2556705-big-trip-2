@@ -15,7 +15,6 @@ export default class PointPresenter {
   #handleModeChange = null;
   #mode = Mode.DEFAULT;
 
-
   constructor({pointsListContainer, pointsModel, onDataChange, onModeChange}) {
     this.#pointsListContainer = pointsListContainer;
     this.#pointsModel = pointsModel;
@@ -110,6 +109,21 @@ export default class PointPresenter {
     this.#pointEditComponent.shake(resetFormState);
   }
 
+  #replaceCardToForm() {
+    document.querySelector('.trip-main__event-add-btn').disabled = true;
+    replace(this.#pointEditComponent, this.#pointComponent);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+    this.#handleModeChange();
+    this.#mode = Mode.EDITING;
+  }
+
+  #replaceFormToCard() {
+    replace(this.#pointComponent, this.#pointEditComponent);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = Mode.DEFAULT;
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
+  }
+
   #handleFavoriteClick = () => {
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
@@ -131,21 +145,6 @@ export default class PointPresenter {
     this.#pointEditComponent.reset(this.#point);
     this.#replaceFormToCard();
   };
-
-  #replaceCardToForm() {
-    document.querySelector('.trip-main__event-add-btn').disabled = true;
-    replace(this.#pointEditComponent, this.#pointComponent);
-    document.addEventListener('keydown', this.#escKeyDownHandler);
-    this.#handleModeChange();
-    this.#mode = Mode.EDITING;
-  }
-
-  #replaceFormToCard() {
-    replace(this.#pointComponent, this.#pointEditComponent);
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-    this.#mode = Mode.DEFAULT;
-    document.querySelector('.trip-main__event-add-btn').disabled = false;
-  }
 
   #handleEditClick = () => {
     this.#replaceCardToForm();
